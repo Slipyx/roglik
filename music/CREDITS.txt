@@ -1,0 +1,4 @@
+ambientmain_0.ogg
+ - License: CC-BY 3.0
+ - By: Brandon Morris (http://opengameart.org/users/brandon-morris)
+ - Source: http://opengameart.org/content/tragic-ambient-main-menu
