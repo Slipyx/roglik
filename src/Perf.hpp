@@ -1,5 +1,5 @@
 /*
- * roglik - Game.h
+ * roglik - Perf.hpp
  * Copyright (C) 2011  Josh Koch <jdk1337@gmail.com>
  *
  * roglik is free software: you can redistribute it and/or modify
@@ -16,39 +16,26 @@
  * along with roglik.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GAME_H
-#define GAME_H
+#ifndef PERF_H
+#define PERF_H
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include "Perf.h"
 
-class Game
+class Perf
 {
 public:
-    Game(int appWidth = 800, int appHeight = 600);
-    void Run();
-    ~Game();
-
-private:
-    sf::RenderWindow app;
-    sf::Event event;
-    float dt;
-
-    // * Temporary background placement *
-    sf::Image imgPlanetBG;
-    sf::Sprite sprPlanetBG;
-    // * Temporary audio testing *
-    sf::Music musAmbMain;
-    sf::SoundBuffer bufBlip;
-    sf::Sound sndBlip;
-
-    // Performance stats
-    Perf perf;
-
-    // Main loop functions
+    Perf(sf::RenderWindow& app);
     void Update(const float& dt);
     void Draw();
+    ~Perf();
+
+private:
+    // app pointer for drawing with
+    sf::RenderWindow* appP;
+    // FPS display
+    sf::Font font;
+    sf::Text txtFps;
+    sf::Clock fpsUdateTimer;
 };
 
 #endif

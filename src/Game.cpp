@@ -16,7 +16,7 @@
  * along with roglik.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Game.h"
+#include "Game.hpp"
 
 // ****************************************************************************
 // Initialize core Game members and load starting state

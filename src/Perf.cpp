@@ -16,7 +16,7 @@
  * along with roglik.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Perf.h"
+#include "Perf.hpp"
 #include <sstream>
 
 Perf::Perf(sf::RenderWindow& app)
