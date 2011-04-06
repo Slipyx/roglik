@@ -17,17 +17,28 @@
  */
 
 #include "Map.hpp"
+#include <iostream>
 
 const unsigned char TILE_SIZE = 32;
 
 Map::Map(sf::RenderWindow& app)
 {
+    sf::Clock mapLoadTimer;
     appP = &app;
-    mapWidth = 250;
-    mapHeight = 250;
-    imgTileSet.LoadFromFile("images/tile.png");
+    mapWidth = 100;
+    mapHeight = 100;
+    imgTileSet.LoadFromFile("images/tileset.png");
     imgTileSet.SetSmooth(false);
     sprTile.SetImage(imgTileSet);
+    // Load rectMap
+    rectMap = new sf::IntRect[(imgTileSet.GetWidth() / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE)];
+    for(int ry = 0; ry < imgTileSet.GetHeight(); ry += TILE_SIZE)
+    {
+        for(int rx = 0; rx < imgTileSet.GetWidth(); rx += TILE_SIZE)
+        {
+            rectMap[(ry / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE) + (rx / TILE_SIZE)] = sf::IntRect(rx, ry, TILE_SIZE, TILE_SIZE);
+        }
+    }
     // Load tMap
     tMap = new unsigned short[mapWidth * mapHeight];
     for(int ty = 0; ty < mapHeight; ty++)
@@ -35,11 +46,12 @@ Map::Map(sf::RenderWindow& app)
         for(int tx = 0; tx < mapWidth; tx++)
         {
             if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.5f)
-                tMap[ty * TILE_SIZE + tx] = 1;
+                tMap[ty * TILE_SIZE + tx] = 17;
             else
-                tMap[ty * TILE_SIZE + tx] = 0;
+                tMap[ty * TILE_SIZE + tx] = 18;
         }
     }
+    std::cout << "Map loaded in " << mapLoadTimer.GetElapsedTime() << " seconds!\n";
 }
 
 void Map::Update(const float& dt)
@@ -63,6 +75,7 @@ void Map::Draw()
             {
                 if(tMap[ty * TILE_SIZE + tx])
                 {
+                    sprTile.SetSubRect(rectMap[tMap[ty * TILE_SIZE + tx] - 1]);
                     sprTile.SetPosition(tx * TILE_SIZE, ty * TILE_SIZE);
                     appP->Draw(sprTile);
                 }
@@ -74,4 +87,5 @@ void Map::Draw()
 Map::~Map()
 {
     delete[] tMap;
+    delete[] rectMap;
 }

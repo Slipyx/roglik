@@ -24,6 +24,7 @@
 Game::Game(int appWidth, int appHeight) : perf(app)
 {
     app.Create(sf::VideoMode(appWidth, appHeight, 32), "roglik", sf::Style::Close);
+    app.SetFramerateLimit(60);
     app.EnableVerticalSync(true);
     app.EnableKeyRepeat(false);
     gView = app.GetDefaultView();
@@ -55,13 +56,13 @@ void Game::Update(const float& dt)
 
     // Input
     if(input.IsKeyDown(sf::Key::Right))
-        gView.Move(10.0f, 0.0f);
+        gView.Move(4.0f, 0.0f);
     else if(input.IsKeyDown(sf::Key::Left))
-        gView.Move(-10.0f, 0.0f);
+        gView.Move(-4.0f, 0.0f);
     if(input.IsKeyDown(sf::Key::Up))
-        gView.Move(0.0f, -10.0f);
+        gView.Move(0.0f, -4.0f);
     else if(input.IsKeyDown(sf::Key::Down))
-        gView.Move(0.0f, 10.0f);
+        gView.Move(0.0f, 4.0f);
 
     while(app.GetEvent(event))
     {
@@ -89,7 +90,7 @@ void Game::Update(const float& dt)
 // Clear screen and draw to display
 void Game::Draw()
 {
-    app.Clear(sf::Color(53, 53, 53)); // Don't need clear when using whole window BG
+    //app.Clear(sf::Color(53, 53, 53)); // Don't need clear when drawing over whole window
 
     // Render
     app.SetView(gView);

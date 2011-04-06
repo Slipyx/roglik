@@ -34,6 +34,7 @@ private:
     sf::RenderWindow* appP;
 
     unsigned short* tMap;
+    sf::IntRect* rectMap;
     unsigned short mapWidth, mapHeight;
     sf::Image imgTileSet;
     sf::Sprite sprTile;
