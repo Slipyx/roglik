@@ -1,5 +1,5 @@
 /*
- * roglik - Perf.hpp
+ * roglik - Map.hpp
  * Copyright (C) 2011  Josh Koch <jdk1337@gmail.com>
  *
  * roglik is free software: you can redistribute it and/or modify
@@ -16,26 +16,28 @@
  * along with roglik.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef PERF_H
-#define PERF_H
+#ifndef MAP_H
+#define MAP_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
-class Perf
+class Map
 {
 public:
-    Perf(sf::RenderWindow& app);
-    ~Perf();
+    Map(sf::RenderWindow& app);
+    ~Map();
     void Update(const float& dt);
     void Draw();
 
 private:
-    // app pointer for drawing with
     sf::RenderWindow* appP;
-    // FPS display
-    sf::Font font;
-    sf::Text txtFps;
-    sf::Clock fpsUdateTimer;
+
+    unsigned short* tMap;
+    unsigned short mapWidth, mapHeight;
+    sf::Image imgTileSet;
+    sf::Sprite sprTile;
+    sf::Music musBGM;
 };
 
 #endif

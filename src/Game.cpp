@@ -17,21 +17,19 @@
  */
 
 #include "Game.hpp"
+#include <iostream>
 
 // ****************************************************************************
-// Initialize core Game members and load starting state
+// Initialize core Game members and load starting map
 Game::Game(int appWidth, int appHeight) : perf(app)
 {
     app.Create(sf::VideoMode(appWidth, appHeight, 32), "roglik", sf::Style::Close);
     app.EnableVerticalSync(true);
     app.EnableKeyRepeat(false);
+    gView = app.GetDefaultView();
 
-    // Loadup initial state
-    imgPlanetBG.LoadFromFile("images/planet_3_0.png");
-    sprPlanetBG.SetImage(imgPlanetBG);
-    musAmbMain.OpenFromFile("music/ambientmain_0.ogg");
-    musAmbMain.SetLoop(true);
-    musAmbMain.Play();
+    // Loadup initial map
+    gMap = new Map(app);
     bufBlip.LoadFromFile("sndfx/blip.wav");
     sndBlip.SetBuffer(bufBlip);
 }
@@ -56,6 +54,14 @@ void Game::Update(const float& dt)
     const sf::Input& input = app.GetInput();
 
     // Input
+    if(input.IsKeyDown(sf::Key::Right))
+        gView.Move(10.0f, 0.0f);
+    else if(input.IsKeyDown(sf::Key::Left))
+        gView.Move(-10.0f, 0.0f);
+    if(input.IsKeyDown(sf::Key::Up))
+        gView.Move(0.0f, -10.0f);
+    else if(input.IsKeyDown(sf::Key::Down))
+        gView.Move(0.0f, 10.0f);
 
     while(app.GetEvent(event))
     {
@@ -67,11 +73,15 @@ void Game::Update(const float& dt)
             if(event.Key.Code == sf::Key::Q)
                 app.Close();
             else if(event.Key.Code == sf::Key::A)
+            {
+                std::cout << sf::Randomizer::Random(0.0f, 1.0f) << '\n';
                 sndBlip.Play();
+            }
         }
     }
 
     // Logic
+    gMap->Update(dt);
     perf.Update(dt);
 }
 
@@ -79,10 +89,14 @@ void Game::Update(const float& dt)
 // Clear screen and draw to display
 void Game::Draw()
 {
-    //app.Clear(sf::Color(53, 53, 53)); // Don't need clear when using whole window BG
+    app.Clear(sf::Color(53, 53, 53)); // Don't need clear when using whole window BG
 
     // Render
-    app.Draw(sprPlanetBG);
+    app.SetView(gView);
+
+    gMap->Draw();
+
+    app.SetView(app.GetDefaultView());
     perf.Draw();
 
     app.Display();
@@ -92,4 +106,5 @@ void Game::Draw()
 // Cleanup core game objects
 Game::~Game()
 {
+    delete gMap;
 }

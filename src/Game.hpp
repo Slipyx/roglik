@@ -22,6 +22,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Perf.hpp"
+#include "Map.hpp"
 
 class Game
 {
@@ -34,15 +35,14 @@ private:
     sf::RenderWindow app;
     sf::Event event;
     float dt;
+    sf::View gView;
 
-    // * Temporary background placement *
-    sf::Image imgPlanetBG;
-    sf::Sprite sprPlanetBG;
     // * Temporary audio testing *
-    sf::Music musAmbMain;
     sf::SoundBuffer bufBlip;
     sf::Sound sndBlip;
 
+    // Current map
+    Map* gMap;
     // Performance stats
     Perf perf;
 
