@@ -95,6 +95,7 @@ void Game::Draw()
     app.SetView(gView);
 
     gMap->DrawBG();
+    gMap->DrawFG();
 
     app.SetView(app.GetDefaultView());
     perf.Draw();

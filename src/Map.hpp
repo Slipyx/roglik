@@ -30,12 +30,14 @@ public:
     ~Map();
     void Update(const float& dt);
     void DrawBG();
+    void DrawFG();
 
 private:
     sf::RenderWindow* appP;
     sf::View* gViewP;
 
     unsigned short* BGtMap;
+    unsigned short* FGtMap;
     sf::IntRect* rectMap;
     unsigned short mapWidth, mapHeight;
     sf::Image imgTileSet;

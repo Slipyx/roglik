@@ -43,6 +43,12 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
                 mapWidth = xml->getAttributeValueAsInt("width");
                 mapHeight = xml->getAttributeValueAsInt("height");
             }
+            else if(!strcmp("music", xml->getNodeName()))
+            {
+                std::string musicFile = xml->getAttributeValue("file");
+                musBGM.OpenFromFile("music/" + musicFile);
+                musBGM.SetLoop(true);
+            }
             else if(!strcmp("tileset", xml->getNodeName()))
             {
                 std::string tilesetFile = xml->getAttributeValue("image");
@@ -64,6 +70,8 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
             break;
         }
     }
+    // Delete XML parser object
+    delete xml;
     // ********************************
     // Load rectMap
     rectMap = new sf::IntRect[(imgTileSet.GetWidth() / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE)];
@@ -86,12 +94,23 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
                 BGtMap[ty * TILE_SIZE + tx] = 18;
         }
     }
-    // Load and play BGM
-    musBGM.OpenFromFile("music/ambientmain_0.ogg");
-    musBGM.SetLoop(true);
+    // Load FGtMap
+    FGtMap = new unsigned short[mapWidth * mapHeight];
+    for(int ty = 0; ty < mapHeight; ty++)
+    {
+        for(int tx = 0; tx < mapWidth; tx++)
+        {
+            if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.1f)
+                FGtMap[ty * TILE_SIZE + tx] = 19;
+            else if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.05f)
+                FGtMap[ty * TILE_SIZE + tx] = 20;
+            else
+                FGtMap[ty * TILE_SIZE + tx] = 0;
+        }
+    }
+    // Play BGM
     musBGM.Play();
-    // Delete XML parser object
-    delete xml;
+
     std::cout << "BG data: *" << BGtData << "*\n";
     std::cout << "FG data: *" << FGtData << "*\n";
     std::cout << "Map loaded in " << mapLoadTimer.GetElapsedTime() << " seconds!\n";
@@ -143,8 +162,35 @@ void Map::DrawBG()
     }
 }
 
+void Map::DrawFG()
+{
+    sf::Vector2f gameViewCenter = appP->GetView().GetCenter();
+    float tileRenderSpaceHalfWidth = ((appP->GetWidth() / 2.0f) + TILE_SIZE);
+    float tileRenderSpaceHalfHeight = ((appP->GetHeight() / 2.0f) + TILE_SIZE);
+    for(int ty = 0; ty < mapHeight; ty++)
+    {
+        for(int tx = 0; tx < mapWidth; tx++)
+        {
+            // If tile is within game view
+            if(tx * TILE_SIZE > gameViewCenter.x - tileRenderSpaceHalfWidth &&
+               tx * TILE_SIZE < gameViewCenter.x + tileRenderSpaceHalfWidth &&
+               ty * TILE_SIZE > gameViewCenter.y - tileRenderSpaceHalfHeight &&
+               ty * TILE_SIZE < gameViewCenter.y + tileRenderSpaceHalfHeight)
+            {
+                if(FGtMap[ty * TILE_SIZE + tx])
+                {
+                    sprTile.SetSubRect(rectMap[FGtMap[ty * TILE_SIZE + tx] - 1]);
+                    sprTile.SetPosition(float(tx * TILE_SIZE), float(ty * TILE_SIZE));
+                    appP->Draw(sprTile);
+                }
+            }
+        }
+    }
+}
+
 Map::~Map()
 {
+    delete[] FGtMap;
     delete[] BGtMap;
     delete[] rectMap;
 }
