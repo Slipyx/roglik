@@ -21,19 +21,21 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <string>
 
 class Map
 {
 public:
-    Map(sf::RenderWindow& app);
+    Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName);
     ~Map();
     void Update(const float& dt);
-    void Draw();
+    void DrawBG();
 
 private:
     sf::RenderWindow* appP;
+    sf::View* gViewP;
 
-    unsigned short* tMap;
+    unsigned short* BGtMap;
     sf::IntRect* rectMap;
     unsigned short mapWidth, mapHeight;
     sf::Image imgTileSet;

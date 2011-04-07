@@ -1,4 +1,5 @@
 tileset.png
  - Contains tiles from the OpenGameArt.org Community Tileset <http://opengameart.org>
+ - Source: <http://opengameart.org/content/oga-community-tileset-nature>
  - By: qubodup, Bart K., Blarumyrran
  - License: GNU GPL 2.0, GNU GPL 3.0, CC-BY-SA 3.0

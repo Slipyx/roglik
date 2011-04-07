@@ -18,47 +18,95 @@
 
 #include "Map.hpp"
 #include <iostream>
+#include "irrxml/irrXML.h"
 
 const unsigned char TILE_SIZE = 32;
 
-Map::Map(sf::RenderWindow& app)
+Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
 {
     sf::Clock mapLoadTimer;
     appP = &app;
-    mapWidth = 100;
-    mapHeight = 100;
-    imgTileSet.LoadFromFile("images/tileset.png");
-    imgTileSet.SetSmooth(false);
-    sprTile.SetImage(imgTileSet);
+    gViewP = &gView;
+    // XML parser object for map file
+    irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader(("maps/" + mapFileName).c_str());
+    // ********************************
+    // Parse the map file!
+    while(xml && xml->read())
+    {
+        switch(xml->getNodeType())
+        {
+        case irr::io::EXN_TEXT:
+            std::cout << xml->getNodeData() << '\n';
+            break;
+        case irr::io::EXN_ELEMENT:
+            if(!strcmp("map", xml->getNodeName()))
+            {
+                mapWidth = xml->getAttributeValueAsInt("width");
+                mapHeight = xml->getAttributeValueAsInt("height");
+            }
+            else if(!strcmp("image", xml->getNodeName()))
+            {
+                std::string tilesetFile = xml->getAttributeValue("source");
+                tilesetFile.erase(0, 3);
+                imgTileSet.LoadFromFile(tilesetFile);
+                imgTileSet.SetSmooth(false);
+                sprTile.SetImage(imgTileSet);
+            }
+            break;
+        }
+    }
+    // ********************************
     // Load rectMap
     rectMap = new sf::IntRect[(imgTileSet.GetWidth() / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE)];
-    for(int ry = 0; ry < imgTileSet.GetHeight(); ry += TILE_SIZE)
+    for(unsigned int ry = 0; ry < imgTileSet.GetHeight(); ry += TILE_SIZE)
     {
-        for(int rx = 0; rx < imgTileSet.GetWidth(); rx += TILE_SIZE)
+        for(unsigned int rx = 0; rx < imgTileSet.GetWidth(); rx += TILE_SIZE)
         {
             rectMap[(ry / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE) + (rx / TILE_SIZE)] = sf::IntRect(rx, ry, TILE_SIZE, TILE_SIZE);
         }
     }
-    // Load tMap
-    tMap = new unsigned short[mapWidth * mapHeight];
+    // Load BGtMap
+    BGtMap = new unsigned short[mapWidth * mapHeight];
     for(int ty = 0; ty < mapHeight; ty++)
     {
         for(int tx = 0; tx < mapWidth; tx++)
         {
-            if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.5f)
-                tMap[ty * TILE_SIZE + tx] = 17;
+            if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.9f)
+                BGtMap[ty * TILE_SIZE + tx] = 17;
             else
-                tMap[ty * TILE_SIZE + tx] = 18;
+                BGtMap[ty * TILE_SIZE + tx] = 18;
         }
     }
+    // Load and play BGM
+    musBGM.OpenFromFile("music/ambientmain_0.ogg");
+    musBGM.SetLoop(true);
+    musBGM.Play();
+    // Delete XML parser object
+    delete xml;
     std::cout << "Map loaded in " << mapLoadTimer.GetElapsedTime() << " seconds!\n";
 }
 
 void Map::Update(const float& dt)
 {
+    // Constrain game view to map
+    sf::Vector2f gameViewCenter = gViewP->GetCenter();
+    float appHalfWidth = appP->GetWidth() / 2.0f;
+    float appHalfHeight = appP->GetHeight() / 2.0f;
+    // X left
+    if(gameViewCenter.x < appHalfWidth)
+        gViewP->SetCenter(appHalfWidth, gameViewCenter.y);
+    // X right
+    else if(gameViewCenter.x > mapWidth * TILE_SIZE - appHalfWidth)
+        gViewP->SetCenter(mapWidth * TILE_SIZE - appHalfWidth, gameViewCenter.y);
+    // Y top
+    if(gameViewCenter.y < appHalfHeight)
+        gViewP->SetCenter(gameViewCenter.x, appHalfHeight);
+    // Y bottom
+    else if(gameViewCenter.y > mapHeight * TILE_SIZE - appHalfHeight)
+        gViewP->SetCenter(gameViewCenter.x, mapHeight * TILE_SIZE - appHalfHeight);
 }
 
-void Map::Draw()
+void Map::DrawBG()
 {
     sf::Vector2f gameViewCenter = appP->GetView().GetCenter();
     float tileRenderSpaceHalfWidth = ((appP->GetWidth() / 2.0f) + TILE_SIZE);
@@ -73,10 +121,10 @@ void Map::Draw()
                ty * TILE_SIZE > gameViewCenter.y - tileRenderSpaceHalfHeight &&
                ty * TILE_SIZE < gameViewCenter.y + tileRenderSpaceHalfHeight)
             {
-                if(tMap[ty * TILE_SIZE + tx])
+                if(BGtMap[ty * TILE_SIZE + tx])
                 {
-                    sprTile.SetSubRect(rectMap[tMap[ty * TILE_SIZE + tx] - 1]);
-                    sprTile.SetPosition(tx * TILE_SIZE, ty * TILE_SIZE);
+                    sprTile.SetSubRect(rectMap[BGtMap[ty * TILE_SIZE + tx] - 1]);
+                    sprTile.SetPosition(float(tx * TILE_SIZE), float(ty * TILE_SIZE));
                     appP->Draw(sprTile);
                 }
             }
@@ -86,6 +134,6 @@ void Map::Draw()
 
 Map::~Map()
 {
-    delete[] tMap;
+    delete[] BGtMap;
     delete[] rectMap;
 }
