@@ -29,15 +29,14 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     gViewP = &gView;
     // XML parser object for map file
     irr::io::IrrXMLReader* xml = irr::io::createIrrXMLReader(("maps/" + mapFileName).c_str());
+    std::string BGtData;
+    std::string FGtData;
     // ********************************
     // Parse the map file!
     while(xml && xml->read())
     {
         switch(xml->getNodeType())
         {
-        case irr::io::EXN_TEXT:
-            std::cout << xml->getNodeData() << '\n';
-            break;
         case irr::io::EXN_ELEMENT:
             if(!strcmp("map", xml->getNodeName()))
             {
@@ -50,6 +49,17 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
                 imgTileSet.LoadFromFile("images/" + tilesetFile);
                 imgTileSet.SetSmooth(false);
                 sprTile.SetImage(imgTileSet);
+            }
+            else if(!strcmp("layer", xml->getNodeName()))
+            {
+                if(!strcmp("Background", xml->getAttributeValue("name")))
+                {
+                    BGtData = xml->getAttributeValue("data");
+                }
+                else if(!strcmp("Foreground", xml->getAttributeValue("name")))
+                {
+                    FGtData = xml->getAttributeValue("data");
+                }
             }
             break;
         }
@@ -82,6 +92,8 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     musBGM.Play();
     // Delete XML parser object
     delete xml;
+    std::cout << "BG data: *" << BGtData << "*\n";
+    std::cout << "FG data: *" << FGtData << "*\n";
     std::cout << "Map loaded in " << mapLoadTimer.GetElapsedTime() << " seconds!\n";
 }
 
