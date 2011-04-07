@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map width="50" height="50"/>
+<tileset image="tileset.png"/>
+<layer name="Background">eJztmUsShCAMRLmCc//DznZqikA+rZ1IFl0uQOgnQWK8xhhXq3WgPoK0/bN4X7VLbdpxnmDY9dG0sTi0c2aPK+287LhHeWuO8zi8c1j2RoQD8S5hjm8ZAzWH5/xDsaBj1pqPIDgy5DJRlor+Z2vO9oJiYfuIMvxeq2m2BtVYtN8uWWU5ZyvwaJnZHlpnSsqbMnxXWzkQfdhqjlxqjlx6E4emZs726eGpeH5keE6ae9n+Eb6iHHfF1VMc//6RPJ4x0LVdBMvs/9QuBrzPEfkOluoH0l6X6orW+dE145mHlfdd7YTBMdtj0TVicqziXbs/PBxvy1Gqc0gslXOtzhfr6wuJfabj</layer>
+<layer name="Foreground">eJzt2EsOgCAMRVH2UPa/VnVAwkAhmvB5z3uSTjRGK6UoKQFQFmfkh+Nvr9lR6zmvc608XUXyyHtVHarUvjqX9+ww11zVPeSv6wE0lVpV75Nl3qnnQe8AAKwQnVCRO6GC8QAA4J7SOoi9udTSiDzK/trMb88R96n3Cl3GG98p/k/B0wGYGQV4</layer>

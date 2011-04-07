@@ -30,7 +30,7 @@ Game::Game(int appWidth, int appHeight) : perf(app)
     gView = app.GetDefaultView();
 
     // Loadup initial map
-    gMap = new Map(app, gView, "rogGrass.tmx");
+    gMap = new Map(app, gView, "rogGrass.xml");
     bufBlip.LoadFromFile("sndfx/blip.wav");
     sndBlip.SetBuffer(bufBlip);
 }

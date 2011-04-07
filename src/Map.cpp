@@ -44,11 +44,10 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
                 mapWidth = xml->getAttributeValueAsInt("width");
                 mapHeight = xml->getAttributeValueAsInt("height");
             }
-            else if(!strcmp("image", xml->getNodeName()))
+            else if(!strcmp("tileset", xml->getNodeName()))
             {
-                std::string tilesetFile = xml->getAttributeValue("source");
-                tilesetFile.erase(0, 3);
-                imgTileSet.LoadFromFile(tilesetFile);
+                std::string tilesetFile = xml->getAttributeValue("image");
+                imgTileSet.LoadFromFile("images/" + tilesetFile);
                 imgTileSet.SetSmooth(false);
                 sprTile.SetImage(imgTileSet);
             }
