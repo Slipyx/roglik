@@ -1,4 +1,4 @@
-ambientmain_0.ogg
+abeth.ogg
  - License: CC-BY 3.0
- - By: Brandon Morris
- - Source: http://opengameart.org/content/tragic-ambient-main-menu
+ - By: elerya <http://opengameart.org/user/811>
+ - Source: http://opengameart.org/content/peaceful-village-loop

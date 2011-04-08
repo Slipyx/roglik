@@ -53,7 +53,6 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
             {
                 std::string tilesetFile = xml->getAttributeValue("image");
                 imgTileSet.LoadFromFile("images/" + tilesetFile);
-                imgTileSet.SetSmooth(false);
                 sprTile.SetImage(imgTileSet);
             }
             else if(!strcmp("layer", xml->getNodeName()))
@@ -72,6 +71,7 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     }
     // Delete XML parser object
     delete xml;
+    // Done parsing!
     // ********************************
     // Load rectMap
     rectMap = new sf::IntRect[(imgTileSet.GetWidth() / TILE_SIZE) * (imgTileSet.GetHeight() / TILE_SIZE)];

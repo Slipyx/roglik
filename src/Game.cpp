@@ -89,7 +89,7 @@ void Game::Update(const float& dt)
 // Clear screen and draw to display
 void Game::Draw()
 {
-    app.Clear(sf::Color(255, 127, 0)); // Don't need clear when drawing over whole window
+    //app.Clear(sf::Color(255, 127, 0)); // Don't need clear when drawing over whole window
 
     // Render
     app.SetView(gView);
