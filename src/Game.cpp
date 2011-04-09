@@ -21,13 +21,18 @@
 
 // ****************************************************************************
 // Initialize core Game members and load starting map
-Game::Game(int appWidth, int appHeight) : perf(app)
+Game::Game(int appWidth, int appHeight) : perf(app, uiView)
 {
     app.Create(sf::VideoMode(appWidth, appHeight, 32), "roglik", sf::Style::Close);
     app.SetFramerateLimit(60);
     app.EnableVerticalSync(true);
     app.EnableKeyRepeat(false);
-    gView = app.GetDefaultView();
+    //gView = app.GetDefaultView();
+    gView.SetSize(427, 240);
+    gView.SetCenter(213.5f, 120);
+    // UI view
+    uiView.SetSize(427, 240);
+    uiView.SetCenter(213.5f, 120);
 
     // Loadup initial map
     gMap = new Map(app, gView, "rogGrass.xml");
@@ -55,13 +60,13 @@ void Game::Update(const float& dt)
     const sf::Input& input = app.GetInput();
     // Input
     if(input.IsKeyDown(sf::Key::Right))
-        gView.Move(250.0f * dt, 0.0f);
+        gView.Move(120.0f * dt, 0.0f);
     else if(input.IsKeyDown(sf::Key::Left))
-        gView.Move(-250.0f * dt, 0.0f);
+        gView.Move(-120.0f * dt, 0.0f);
     if(input.IsKeyDown(sf::Key::Up))
-        gView.Move(0.0f, -250.0f * dt);
+        gView.Move(0.0f, -120.0f * dt);
     else if(input.IsKeyDown(sf::Key::Down))
-        gView.Move(0.0f, 250.0f * dt);
+        gView.Move(0.0f, 120.0f * dt);
 
     while(app.GetEvent(event))
     {
@@ -97,7 +102,7 @@ void Game::Draw()
     gMap->DrawBG();
     gMap->DrawFG();
 
-    app.SetView(app.GetDefaultView());
+    app.SetView(uiView);
     perf.Draw();
 
     app.Display();

@@ -19,14 +19,15 @@
 #include "Perf.hpp"
 #include <sstream>
 
-Perf::Perf(sf::RenderWindow& app)
+Perf::Perf(sf::RenderWindow& app, sf::View& uiView)
 {
     appP = &app;
+    uiViewP = &uiView;
     font.LoadFromFile("fonts/DroidSans-Bold.ttf"); // TODO: Get from font manager
     txtFps.SetFont(font);
     txtFps.SetString(sf::String("0 FPS"));
-    txtFps.SetCharacterSize(12);
-    txtFps.SetPosition(appP->GetWidth() - txtFps.GetRect().Width - 8, 4.0f); // Align 8 pixels from right of window
+    txtFps.SetCharacterSize(10);
+    txtFps.SetPosition(uiViewP->GetSize().x - txtFps.GetRect().Width - 4, 2.0f); // Align 4 pixels from right of uiView
     txtFps.SetColor(sf::Color(255, 0, 0));
     // Reset fps timer when constructor is finished
     fpsUdateTimer.Reset();
@@ -41,7 +42,7 @@ void Perf::Update(const float& dt)
         std::stringstream ssfps;
         ssfps << (int)fps << " FPS";
         txtFps.SetString(sf::String(ssfps.str()));
-        txtFps.SetPosition(appP->GetWidth() - txtFps.GetRect().Width - 8, 4.0f); // Re-align
+        txtFps.SetPosition(uiViewP->GetSize().x - txtFps.GetRect().Width - 4, 2.0f); // Re-align
         // Change color based on fps range
         if(fps >= 40)
             txtFps.SetColor(sf::Color(0, 255, 0));

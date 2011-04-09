@@ -36,6 +36,7 @@ private:
     sf::Event event;
     float dt;
     sf::View gView;
+    sf::View uiView;
 
     // * Temporary audio testing *
     sf::SoundBuffer bufBlip;

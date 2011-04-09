@@ -20,7 +20,7 @@
 #include <iostream>
 #include "irrxml/irrXML.h"
 
-const unsigned char TILE_SIZE = 32;
+const unsigned char TILE_SIZE = 16;
 
 Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
 {
@@ -111,8 +111,8 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     // Play BGM
     musBGM.Play();
 
-    std::cout << "BG data: *" << BGtData << "*\n";
-    std::cout << "FG data: *" << FGtData << "*\n";
+    //std::cout << "BG data: *" << BGtData << "*\n";
+    //std::cout << "FG data: *" << FGtData << "*\n";
     std::cout << "Map loaded in " << mapLoadTimer.GetElapsedTime() << " seconds!\n";
 }
 
@@ -120,72 +120,56 @@ void Map::Update(const float& dt)
 {
     // Constrain game view to map
     sf::Vector2f gameViewCenter = gViewP->GetCenter();
-    float appHalfWidth = appP->GetWidth() / 2.0f;
-    float appHalfHeight = appP->GetHeight() / 2.0f;
+    float gViewHalfWidth = gViewP->GetSize().x / 2.0f;
+    float gViewHalfHeight = gViewP->GetSize().y / 2.0f;
     // X left
-    if(gameViewCenter.x < appHalfWidth)
-        gViewP->SetCenter(appHalfWidth, gameViewCenter.y);
+    if(gameViewCenter.x < gViewHalfWidth)
+        gViewP->SetCenter(gViewHalfWidth, gameViewCenter.y);
     // X right
-    else if(gameViewCenter.x > mapWidth * TILE_SIZE - appHalfWidth)
-        gViewP->SetCenter(mapWidth * TILE_SIZE - appHalfWidth, gameViewCenter.y);
+    else if(gameViewCenter.x > mapWidth * TILE_SIZE - gViewHalfWidth)
+        gViewP->SetCenter(mapWidth * TILE_SIZE - gViewHalfWidth, gameViewCenter.y);
     // Y top
-    if(gameViewCenter.y < appHalfHeight)
-        gViewP->SetCenter(gameViewCenter.x, appHalfHeight);
+    if(gameViewCenter.y < gViewHalfHeight)
+        gViewP->SetCenter(gameViewCenter.x, gViewHalfHeight);
     // Y bottom
-    else if(gameViewCenter.y > mapHeight * TILE_SIZE - appHalfHeight)
-        gViewP->SetCenter(gameViewCenter.x, mapHeight * TILE_SIZE - appHalfHeight);
+    else if(gameViewCenter.y > mapHeight * TILE_SIZE - gViewHalfHeight)
+        gViewP->SetCenter(gameViewCenter.x, mapHeight * TILE_SIZE - gViewHalfHeight);
+}
+
+void Map::DrawLayer(unsigned short* layerTMap)
+{
+    sf::Vector2f gameViewCenter = appP->GetView().GetCenter();
+    float tileRenderSpaceHalfWidth = appP->GetView().GetSize().x / 2.0f + TILE_SIZE;
+    float tileRenderSpaceHalfHeight = appP->GetView().GetSize().y / 2.0f + TILE_SIZE;
+    for(int ty = 0; ty < mapHeight; ty++)
+    {
+        for(int tx = 0; tx < mapWidth; tx++)
+        {
+            // If tile is within game view
+            if(tx * TILE_SIZE > gameViewCenter.x - tileRenderSpaceHalfWidth &&
+               tx * TILE_SIZE < gameViewCenter.x + tileRenderSpaceHalfWidth &&
+               ty * TILE_SIZE > gameViewCenter.y - tileRenderSpaceHalfHeight &&
+               ty * TILE_SIZE < gameViewCenter.y + tileRenderSpaceHalfHeight)
+            {
+                if(layerTMap[ty * TILE_SIZE + tx])
+                {
+                    sprTile.SetSubRect(rectMap[layerTMap[ty * TILE_SIZE + tx] - 1]);
+                    sprTile.SetPosition(float(tx * TILE_SIZE), float(ty * TILE_SIZE));
+                    appP->Draw(sprTile);
+                }
+            }
+        }
+    }
 }
 
 void Map::DrawBG()
 {
-    sf::Vector2f gameViewCenter = appP->GetView().GetCenter();
-    float tileRenderSpaceHalfWidth = ((appP->GetWidth() / 2.0f) + TILE_SIZE);
-    float tileRenderSpaceHalfHeight = ((appP->GetHeight() / 2.0f) + TILE_SIZE);
-    for(int ty = 0; ty < mapHeight; ty++)
-    {
-        for(int tx = 0; tx < mapWidth; tx++)
-        {
-            // If tile is within game view
-            if(tx * TILE_SIZE > gameViewCenter.x - tileRenderSpaceHalfWidth &&
-               tx * TILE_SIZE < gameViewCenter.x + tileRenderSpaceHalfWidth &&
-               ty * TILE_SIZE > gameViewCenter.y - tileRenderSpaceHalfHeight &&
-               ty * TILE_SIZE < gameViewCenter.y + tileRenderSpaceHalfHeight)
-            {
-                if(BGtMap[ty * TILE_SIZE + tx])
-                {
-                    sprTile.SetSubRect(rectMap[BGtMap[ty * TILE_SIZE + tx] - 1]);
-                    sprTile.SetPosition(float(tx * TILE_SIZE), float(ty * TILE_SIZE));
-                    appP->Draw(sprTile);
-                }
-            }
-        }
-    }
+    DrawLayer(BGtMap);
 }
 
 void Map::DrawFG()
 {
-    sf::Vector2f gameViewCenter = appP->GetView().GetCenter();
-    float tileRenderSpaceHalfWidth = ((appP->GetWidth() / 2.0f) + TILE_SIZE);
-    float tileRenderSpaceHalfHeight = ((appP->GetHeight() / 2.0f) + TILE_SIZE);
-    for(int ty = 0; ty < mapHeight; ty++)
-    {
-        for(int tx = 0; tx < mapWidth; tx++)
-        {
-            // If tile is within game view
-            if(tx * TILE_SIZE > gameViewCenter.x - tileRenderSpaceHalfWidth &&
-               tx * TILE_SIZE < gameViewCenter.x + tileRenderSpaceHalfWidth &&
-               ty * TILE_SIZE > gameViewCenter.y - tileRenderSpaceHalfHeight &&
-               ty * TILE_SIZE < gameViewCenter.y + tileRenderSpaceHalfHeight)
-            {
-                if(FGtMap[ty * TILE_SIZE + tx])
-                {
-                    sprTile.SetSubRect(rectMap[FGtMap[ty * TILE_SIZE + tx] - 1]);
-                    sprTile.SetPosition(float(tx * TILE_SIZE), float(ty * TILE_SIZE));
-                    appP->Draw(sprTile);
-                }
-            }
-        }
-    }
+    DrawLayer(FGtMap);
 }
 
 Map::~Map()

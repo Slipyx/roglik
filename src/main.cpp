@@ -17,11 +17,25 @@
  */
 
 #include "Game.hpp"
+#include <iostream>
 
 int main(int argc, char** argv)
 {
-    // Initialize core game code and load initial state
-    Game game(854, 480);
+    int sw = 854, sh = 480;
+    // Check command line options
+    for(int i = 1; i < argc; i++)
+    {
+        // --noscale: Run game in 1:1 graphics scale - 427x240 resolution
+        if(!strcmp("--noscale", argv[i]))
+        {
+            std::cout << "Setting 1:1 scale...\n";
+            sw = 427;
+            sh = 240;
+        }
+    }
+
+    // Initialize core game object and load initial map
+    Game game(sw, sh);
 
     // Start running main game loop
     game.Run();

@@ -42,6 +42,8 @@ private:
     sf::Image imgTileSet;
     sf::Sprite sprTile;
     sf::Music musBGM;
+
+    void DrawLayer(unsigned short* layerTMap);
 };
 
 #endif

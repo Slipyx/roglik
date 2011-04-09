@@ -24,7 +24,7 @@
 class Perf
 {
 public:
-    Perf(sf::RenderWindow& app);
+    Perf(sf::RenderWindow& app, sf::View& uiView);
     ~Perf();
     void Update(const float& dt);
     void Draw();
@@ -32,6 +32,7 @@ public:
 private:
     // app pointer for drawing with
     sf::RenderWindow* appP;
+    sf::View* uiViewP;
     // FPS display
     sf::Font font;
     sf::Text txtFps;
