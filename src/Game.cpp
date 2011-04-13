@@ -21,18 +21,19 @@
 
 // ****************************************************************************
 // Initialize core Game members and load starting map
-Game::Game(int appWidth, int appHeight) : perf(app, uiView)
+Game::Game(int appWidth, int appHeight)
 {
     app.Create(sf::VideoMode(appWidth, appHeight, 32), "roglik", sf::Style::Close);
     app.SetFramerateLimit(60);
     app.EnableVerticalSync(true);
     app.EnableKeyRepeat(false);
     //gView = app.GetDefaultView();
-    gView.SetSize(427, 240);
-    gView.SetCenter(213.5f, 120);
+    gView.SetSize(320, 240);
+    gView.SetCenter(160, 120);
     // UI view
-    uiView.SetSize(427, 240);
-    uiView.SetCenter(213.5f, 120);
+    uiView = gView;
+    // Performace stats
+    perf = new Perf(app, uiView);
 
     // Loadup initial map
     gMap = new Map(app, gView, "rogGrass.xml");
@@ -68,7 +69,7 @@ void Game::Update(const float& dt)
     else if(input.IsKeyDown(sf::Key::Down))
         gView.Move(0.0f, 120.0f * dt);
 
-    while(app.GetEvent(event))
+    while(app.PollEvent(event))
     {
         if(event.Type == sf::Event::Closed)
             app.Close();
@@ -87,7 +88,7 @@ void Game::Update(const float& dt)
 
     // Logic
     gMap->Update(dt);
-    perf.Update(dt);
+    perf->Update(dt);
 }
 
 // ****************************************************************************
@@ -103,7 +104,7 @@ void Game::Draw()
     gMap->DrawFG();
 
     app.SetView(uiView);
-    perf.Draw();
+    perf->Draw();
 
     app.Display();
 }
@@ -113,4 +114,5 @@ void Game::Draw()
 Game::~Game()
 {
     delete gMap;
+    delete perf;
 }

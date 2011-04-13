@@ -21,15 +21,15 @@
 
 int main(int argc, char** argv)
 {
-    int sw = 854, sh = 480;
+    int sw = 640, sh = 480;
     // Check command line options
     for(int i = 1; i < argc; i++)
     {
-        // --noscale: Run game in 1:1 graphics scale - 427x240 resolution
+        // --noscale: Run game in 1:1 graphics scale - 320x240 resolution
         if(!strcmp("--noscale", argv[i]))
         {
             std::cout << "Setting 1:1 scale...\n";
-            sw = 427;
+            sw = 320;
             sh = 240;
         }
     }

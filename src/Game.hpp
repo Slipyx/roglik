@@ -42,10 +42,10 @@ private:
     sf::SoundBuffer bufBlip;
     sf::Sound sndBlip;
 
+    // Performance stats
+    Perf* perf;
     // Current map
     Map* gMap;
-    // Performance stats
-    Perf perf;
 
     // Main loop functions
     void Update(const float& dt);
