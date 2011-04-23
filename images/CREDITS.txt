@@ -1,5 +1,5 @@
 tileset16.png
  - Contains tiles from surt's fantasy town tiles.
- - Source: <http://opengameart.org/content/town-tiles>
- - By: surt <http://opengameart.org/users/surt>
  - License: CC-BY-SA 3.0
+ - By: surt <http://opengameart.org/users/surt>
+ - Source: <http://opengameart.org/content/town-tiles>
