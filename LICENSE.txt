@@ -1,4 +1,8 @@
-Copyright (c) 2011 Josh Koch <jdk1337@gmail.com>
+-------------------------------------------------------------------------------
+- roglik
+-------------------------------------------------------------------------------
+
+Copyright (c) 2011 Josh Koch
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -18,3 +22,10 @@ misrepresented as being the original software.
 
 3. This notice may not be removed or altered from any source
 distribution.
+
+-------------------------------------------------------------------------------
+- External libraries
+-------------------------------------------------------------------------------
+
+SFML 2.0 - <http://sfml-dev.org/> - zlib/libpng license
+irrXML 1.2 - <http://www.ambiera.com/irrxml/> - zlib/libpng license

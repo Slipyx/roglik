@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Josh Koch <jdk1337@gmail.com>
+ * Copyright (c) 2011 Josh Koch
  *
  * This software is provided 'as-is', without any express or implied
  * warranty. In no event will the authors be held liable for any damages
