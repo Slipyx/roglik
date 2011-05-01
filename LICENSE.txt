@@ -27,5 +27,5 @@ distribution.
 - External libraries
 -------------------------------------------------------------------------------
 
-SFML 2.0 - <http://sfml-dev.org/> - zlib/libpng license
-irrXML 1.2 - <http://www.ambiera.com/irrxml/> - zlib/libpng license
+SFML 2.0 - http://sfml-dev.org/ - zlib/libpng license
+irrXML 1.2 - http://www.ambiera.com/irrxml/ - zlib/libpng license
