@@ -1,8 +1,8 @@
-                                 roglik README
+                                 roglik Readme
                         https://github.com/Slipyx/roglik
 
 -------------------------------------------------------------------------------
-- LICENSE
+- License
 -------------------------------------------------------------------------------
 
 Source code is released under the zlib/libpng license. Unless otherwise noted,
@@ -10,7 +10,7 @@ content is licensed under CC-BY-SA 3.0. See included LICENSE.txt for full
 license information.
 
 -------------------------------------------------------------------------------
-- INTRODUCTION
+- Introduction
 -------------------------------------------------------------------------------
 
 This is the readme file for the open source game roglik. roglik is an open
@@ -21,7 +21,7 @@ in general. If this goes well, I intend to get deeper into design and build
 upon it to make a full-fledged open source indie game.
 
 -------------------------------------------------------------------------------
-- COMPILING
+- Compiling
 -------------------------------------------------------------------------------
 
 roglik is programmed in C++ (I use Code::Blocks with MSVC compiler). Currently,
@@ -35,7 +35,7 @@ sfml-graphics, sfml-window, sfml-system, and sfml-main. Hopefully, this is
 enough information for you to successfully compile roglik and get it running.
 
 -------------------------------------------------------------------------------
-- CONCLUSION
+- Conclusion
 -------------------------------------------------------------------------------
 
 Well, this is the end of the readme, thank you for reading it! (Or at least

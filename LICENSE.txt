@@ -24,7 +24,7 @@ misrepresented as being the original software.
 distribution.
 
 -------------------------------------------------------------------------------
-- External libraries
+- External Libraries
 -------------------------------------------------------------------------------
 
 SFML 2.0 - http://sfml-dev.org/ - zlib/libpng license
