@@ -93,10 +93,10 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     {
         for(int tx = 0; tx < mapWidth; tx++)
         {
-            if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.9f)
-                BGtMap[ty * TILE_SIZE + tx] = 17;
-            else
-                BGtMap[ty * TILE_SIZE + tx] = 18;
+            if(BGtData.at(0) == '\n')
+                BGtData.erase(0, 1);
+            BGtMap[ty * TILE_SIZE + tx] = atoi(BGtData.substr(0, BGtData.find(',')).c_str());
+            BGtData.erase(0, BGtData.find(',') + 1);
         }
     }
     // Load FGtMap
@@ -105,12 +105,10 @@ Map::Map(sf::RenderWindow& app, sf::View& gView, std::string mapFileName)
     {
         for(int tx = 0; tx < mapWidth; tx++)
         {
-            if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.1f)
-                FGtMap[ty * TILE_SIZE + tx] = 19;
-            else if(sf::Randomizer::Random(0.0f, 1.0f) <= 0.05f)
-                FGtMap[ty * TILE_SIZE + tx] = 20;
-            else
-                FGtMap[ty * TILE_SIZE + tx] = 0;
+            if(FGtData.at(0) == '\n')
+                FGtData.erase(0, 1);
+            FGtMap[ty * TILE_SIZE + tx] = atoi(FGtData.substr(0, FGtData.find(',')).c_str());
+            FGtData.erase(0, FGtData.find(',') + 1);
         }
     }
     // Play BGM

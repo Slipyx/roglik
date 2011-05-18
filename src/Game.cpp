@@ -85,7 +85,7 @@ void Game::Update(const float& dt)
                 app.Close();
             else if(event.Key.Code == sf::Key::A)
             {
-                std::cout << sf::Randomizer::Random(0.0f, 1.0f) << '\n';
+                std::cout << rand() / RAND_MAX << '\n';
                 sndBlip.Play();
             }
         }
